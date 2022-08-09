@@ -24,7 +24,7 @@ def generate_launch_description():
         [
             FindPackageShare("ros2_control_demo_bringup"),
             "config",
-            "rrbot_joint_trajectory_publisher.yaml",
+            "rrbot_sleepy_trajectory_publisher.yaml",
         ]
     )
 
