@@ -19,6 +19,7 @@
 #include <limits>
 #include <memory>
 #include <vector>
+#include <fstream>
 
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
@@ -193,6 +194,23 @@ hardware_interface::return_type RRBotSystemPositionOnlyHardware::read(
 {
   // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
   RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"), "Reading...");
+  
+  auto now = std::chrono::system_clock::now();
+  read_call_date.push_back(std::make_pair(std::chrono::system_clock::to_time_t(now)
+                                          , std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000));
+  
+  if (read_call_date.size() == 300) 
+  {
+    std::ofstream generated_csv;
+    generated_csv.open("/tmp/normal_read.csv");
+    generated_csv << "normal read\n";
+    for (auto& element : read_call_date) 
+    {
+      generated_csv << std::put_time(localtime(&element.first), "%H:%M:%S") << '.' << std::setfill('0') << std::setw(3) << element.second.count() << ",\n";
+    }
+    generated_csv.close();
+  }
+  
 
   for (uint i = 0; i < hw_states_.size(); i++)
   {
@@ -213,7 +231,23 @@ hardware_interface::return_type RRBotSystemPositionOnlyHardware::write(
 {
   // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
   RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"), "Writing...");
+  
+  auto now = std::chrono::system_clock::now();
+  write_call_date.push_back(std::make_pair(std::chrono::system_clock::to_time_t(now)
+                                          , std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000));
 
+  if (write_call_date.size() == 300) 
+  {
+    std::ofstream generated_csv;
+    generated_csv.open("/tmp/write_normal.csv");
+    generated_csv << "normal write\n";
+    for (auto& element : write_call_date) 
+    {
+      generated_csv << std::put_time(localtime(&element.first), "%H:%M:%S") << '.' << std::setfill('0') << std::setw(3) << element.second.count() << ",\n";
+    }
+    generated_csv.close();
+  }
+  
   for (uint i = 0; i < hw_commands_.size(); i++)
   {
     // Simulate sending commands to the hardware

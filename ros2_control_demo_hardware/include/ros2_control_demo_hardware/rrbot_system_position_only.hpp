@@ -65,7 +65,7 @@ public:
   hardware_interface::return_type write(
     const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
-private:
+protected:
   // Parameters for the RRBot simulation
   double hw_start_sec_;
   double hw_stop_sec_;
@@ -74,6 +74,10 @@ private:
   // Store the command for the simulated robot
   std::vector<double> hw_commands_;
   std::vector<double> hw_states_;
+
+  std::vector<std::pair<std::time_t, std::chrono::milliseconds>> read_call_date;
+  std::vector<std::pair<std::time_t, std::chrono::milliseconds>> write_call_date;
+
 };
 
 }  // namespace ros2_control_demo_hardware

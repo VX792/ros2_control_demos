@@ -24,6 +24,7 @@ add_library(
   SHARED
   src/diffbot_system.cpp
   src/rrbot_system_position_only.cpp
+  src/sleepy_hardware.cpp
   src/rrbot_system_multi_interface.cpp
   src/rrbot_system_with_sensor.cpp
   src/rrbot_actuator.cpp
