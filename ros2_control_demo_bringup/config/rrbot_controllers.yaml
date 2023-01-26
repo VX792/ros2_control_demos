@@ -27,6 +27,7 @@ position_trajectory_controller:
   ros__parameters:
     joints:
       - joint1
+      - joint2
 
     command_interfaces:
       - position
@@ -34,7 +35,7 @@ position_trajectory_controller:
     state_interfaces:
       - position
 
-    is_async: false
+    is_async: true
 
     state_publish_rate: 200.0 # Defaults to 50
     action_monitor_rate: 20.0 # Defaults to 20

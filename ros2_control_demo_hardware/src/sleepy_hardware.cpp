@@ -17,7 +17,7 @@ hardware_interface::return_type SleepyRRBotHW::read(
         std::mt19937_64 eng{std::random_device{}()};
         std::uniform_int_distribution<> dist{10, 300};
     
-        std::this_thread::sleep_for(std::chrono::milliseconds(sleep_base + dist(eng)));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(sleep_base + dist(eng)));
     }
 
     auto now = std::chrono::system_clock::now();
@@ -41,10 +41,12 @@ hardware_interface::return_type SleepyRRBotHW::read(
         // Simulate RRBot's movement
         hw_states_[i] = hw_states_[i] + (hw_commands_[i] - hw_states_[i]) / hw_slowdown_;
         RCLCPP_INFO(
-        rclcpp::get_logger("SleepyRRBotHW"), "Got state %.5f for joint %d!",
-        hw_states_[i], i);
+        rclcpp::get_logger("SleepyRRBotHW"), "Got state %.5f for joint %s!",
+        hw_states_[i], info_.joints[i].name.c_str());
+
+
     }
-    RCLCPP_INFO(rclcpp::get_logger("SleepyRRBotHW"), "Joints successfully read!");
+    RCLCPP_INFO(rclcpp::get_logger("SleepyRRBotHW"), "SLEEPY Joints successfully read!");
     // END: This part here is for exemplary purposes - Please do not copy to your production code
     return hardware_interface::return_type::OK;
 
@@ -56,9 +58,9 @@ hardware_interface::return_type SleepyRRBotHW::write(
     if (sleep_base != 0) 
     {
         std::mt19937_64 eng{std::random_device{}()};
-        std::uniform_int_distribution<> dist{10, 300};
+        std::uniform_int_distribution<> dist{150, 300};
     
-        std::this_thread::sleep_for(std::chrono::milliseconds(sleep_base + dist(eng)));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(sleep_base + dist(eng)));
     }
 
     auto now = std::chrono::system_clock::now();
@@ -81,11 +83,12 @@ hardware_interface::return_type SleepyRRBotHW::write(
     {
         // Simulate sending commands to the hardware
         RCLCPP_INFO(
-        rclcpp::get_logger("SleepyRRBotHW"), "Got command %.5f for joint %d!",
-        hw_commands_[i], i);
+        rclcpp::get_logger("SleepyRRBotHW"), "Got command %.5f for joint %s!",
+        hw_commands_[i], info_.joints[i].name.c_str());
+
     }
     RCLCPP_INFO(
-        rclcpp::get_logger("SleepyRRBotHW"), "Joints successfully written!");
+        rclcpp::get_logger("SleepyRRBotHW"), " SLEEPY Joints successfully written!");
     // END: This part here is for exemplary purposes - Please do not copy to your production code
 
     return hardware_interface::return_type::OK;
